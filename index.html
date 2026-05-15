@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digvijay Patil | DevOps Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+      line-height: 1.6;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* Navbar */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: #38bdf8;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(to right, rgba(15,23,42,0.95), rgba(30,41,59,0.85));
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero-text h3 {
+      color: #38bdf8;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .hero-text h1 {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero-text span {
+      color: #38bdf8;
+    }
+
+    .hero-text p {
+      color: #cbd5e1;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #38bdf8;
+      color: black;
+    }
+
+    .btn-primary:hover {
+      background: #0ea5e9;
+      transform: translateY(-3px);
+    }
+
+    .btn-secondary {
+      border: 2px solid #38bdf8;
+      color: #38bdf8;
+    }
+
+    .btn-secondary:hover {
+      background: #38bdf8;
+      color: black;
+    }
+
+    .hero-card {
+      background: #1e293b;
+      border-radius: 30px;
+      padding: 50px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    .hero-card .icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+    }
+
+    /* Section */
+    section {
+      padding: 100px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 2.8rem;
+      color: #38bdf8;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      color: #94a3b8;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 35px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: #38bdf8;
+    }
+
+    .card h3 {
+      color: #38bdf8;
+      margin-bottom: 20px;
+      font-size: 1.7rem;
+    }
+
+    .card p {
+      color: #cbd5e1;
+      margin-bottom: 12px;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-box {
+      background: #1e293b;
+      padding: 20px;
+      text-align: center;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    .skill-box:hover {
+      transform: scale(1.05);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    /* Certifications */
+    .cert-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .cert-box {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.3s;
+    }
+
+    .cert-box:hover {
+      border-color: #38bdf8;
+      transform: translateY(-6px);
+    }
+
+    .cert-box h4 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .cert-box p {
+      color: #94a3b8;
+    }
+
+    /* Experience */
+    .experience {
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .experience h3 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .experience .company {
+      color: #38bdf8;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .experience ul {
+      margin-left: 20px;
+      color: #cbd5e1;
+    }
+
+    .experience li {
+      margin-bottom: 10px;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: #94a3b8;
+    }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+      .hero-text h1 {
+        font-size: 2.8rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-card {
+        padding: 35px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="container nav-content">
+      <div class="logo">Digvijay Patil</div>
+
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#experience">Experience</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+
+      <div class="hero-text">
+        <h3>DevOps Engineer Portfolio</h3>
+
+        <h1>
+          Hi, I'm <span>Digvijay Patil</span>
+        </h1>
+
+        <p>
+          MCA graduate and passionate DevOps Engineer currently working at Capgemini.
+          Skilled in AWS cloud technologies, automation, CI/CD pipelines,
+          infrastructure management, and deployment optimization.
+        </p>
+
+        <div class="btn-group">
+          <a href="#skills" class="btn btn-primary">Explore Skills</a>
+          <a href="#experience" class="btn btn-secondary">View Experience</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="icon">☁️</div>
+        <h2>Cloud & DevOps</h2>
+        <p>
+          Automation • Scalability • Reliability
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>About Me</h2>
+        <p>Professional background and profile summary.</p>
+      </div>
+
+      <div class="about-grid">
+
+        <div class="card">
+          <h3>Profile</h3>
+          <p>
+            I am a dedicated DevOps Engineer with expertise in cloud computing,
+            infrastructure automation, CI/CD implementation, and deployment management.
+            I enjoy building scalable and reliable systems using modern cloud technologies.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Personal Details</h3>
+          <p><strong>Name:</strong> Digvijay Patil</p>
+          <p><strong>Education:</strong> MCA</p>
+          <p><strong>Company:</strong> Capgemini</p>
+          <p><strong>Role:</strong> DevOps Engineer</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Technical Skills</h2>
+        <p>Technologies and tools I work with.</p>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-box">AWS Cloud</div>
+        <div class="skill-box">DevOps</div>
+        <div class="skill-box">Docker</div>
+        <div class="skill-box">Kubernetes</div>
+        <div class="skill-box">Jenkins</div>
+        <div class="skill-box">Terraform</div>
+        <div class="skill-box">Linux</div>
+        <div class="skill-box">CI/CD</div>
+        <div class="skill-box">Git & GitHub</div>
+        <div class="skill-box">Cloud Infrastructure</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section id="certifications">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Certifications</h2>
+        <p>AWS certifications and achievements.</p>
+      </div>
+
+      <div class="cert-list">
+
+        <div class="cert-box">
+          <h4>🏆 AWS Certified Cloud Practitioner</h4>
+          <p>Amazon Web Services foundational cloud certification.</p>
+        </div>
+
+        <div class="cert-box">
+          <h4>🏆 AWS Certified SysOps Administrator – Associate</h4>
+          <p>Certification focused on AWS operations and cloud administration.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Professional Experience</h2>
+        <p>Current role and responsibilities.</p>
+      </div>
+
+      <div class="experience">
+        <h3>DevOps Engineer</h3>
+        <div class="company">Capgemini</div>
+
+        <ul>
+          <li>Managing cloud infrastructure and deployment workflows.</li>
+          <li>Working on CI/CD pipeline automation and release management.</li>
+          <li>Implementing scalable cloud solutions using AWS services.</li>
+          <li>Monitoring and improving system reliability and performance.</li>
+          <li>Collaborating with development and operations teams.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      © 2026 Digvijay Patil | DevOps Engineer | AWS Certified
+    </p>
+  </footer>
+
+</body>
+</html>
