@@ -1,27 +1,32 @@
 name: CICD
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
 
 jobs:
   code:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
+      - name: Checkout code
         run: echo "Code clone from Github"
-    
+
   build:
+    needs: code
     runs-on: ubuntu-latest
     steps:
       - name: Build docker container
         run: echo "Docker container build"
-        
+
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Test the container
         run: echo "Testing the container"
-        
+
   deploy:
+    # Added spaces within the array for proper YAML syntax
+    needs: [build, test]
     runs-on: ubuntu-latest
     steps:
       - name: Deploying the app
