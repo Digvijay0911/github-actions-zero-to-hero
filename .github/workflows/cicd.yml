@@ -35,6 +35,7 @@ jobs:
         run: echo "Testing the container"
 
   deploy:
+    if: inputs.environment=='dev'
     # Added spaces within the array for proper YAML syntax
     needs: [build, test]
     runs-on: ubuntu-latest
