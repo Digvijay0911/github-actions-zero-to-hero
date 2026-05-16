@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>System Monitoring</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+        }
+        /* Fixed targets: targeted the correct IDs instead of an unused class */
+        #cpu-gauge, #mem-gauge {
+            margin: 20px auto;
+            width: 80%;
+            background-color: rgba(240, 240, 240, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .alert-danger {
+            background-color: #ff5f5f;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>System Monitoring</h1>
+        <div id="cpu-gauge"></div>
+        <div id="mem-gauge"></div>
+        
+        {% if message %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Safely injected Jinja context values with default fallbacks to prevent JS crashes
+        var cpuVal = parseFloat("{{ cpu_percent | default(0) }}");
+        var memVal = parseFloat("{{ mem_percent | default(0) }}");
+
+        var cpuGauge = {
+            type: "indicator",
+            mode: "gauge+number",
+            value: cpuVal,
+            gauge: {
+                axis: { range: [null, 100] },
+                bar: { color: "#1f77b4" },
+                bgcolor: "white",
+                borderwidth: 2,
+                bordercolor: "#ccc",
+                steps: [
+                    { range: [0, 50], color: "#d9f0a3" },
+                    { range: [50, 85], color: "#ffeb84" },
+                    { range: [85, 100], color: "#ff5f5f" }
+                ],
+                threshold: {
+                    line: { color: "red", width: 4 },
+                    thickness: 0.75,
+                    value: cpuVal
+                }
+            }
+        };
+        
+        var memGauge = {
+            type: "indicator",
+            mode: "gauge+number",
+            value: memVal,
+            gauge: {
+                axis: { range: [null, 100] },
+                bar: { color: "#1f77b4" },
+                bgcolor: "white",
+                borderwidth: 2,
+                bordercolor: "#ccc",
+                steps: [
+                    { range: [0, 50], color: "#d9f0a3" },
+                    { range: [50, 85], color: "#ffeb84" },
+                    { range: [85, 100], color: "#ff5f5f" }
+                ],
+                threshold: {
+                    line: { color: "red", width: 4 },
+                    thickness: 0.75,
+                    value: memVal
+                }
+            }
+        };
+        
+        // Added dynamic configuration adjustments to prevent visual artifacts
+        var cpuGaugeLayout = { 
+            title: { text: "CPU Utilization", font: { size: 18 } },
+            margin: { t: 50, b: 20, l: 30, r: 30 }
+        };
+        var memGaugeLayout = { 
+            title: { text: "Memory Utilization", font: { size: 18 } },
+            margin: { t: 50, b: 20, l: 30, r: 30 }
+        };
+        
+        // Render plots along with dynamic responsiveness configuration arguments
+        Plotly.newPlot('cpu-gauge', [cpuGauge], cpuGaugeLayout, {responsive: true});
+        Plotly.newPlot('mem-gauge', [memGauge], memGaugeLayout, {responsive: true});
+    </script>
+</body>
+</html>
