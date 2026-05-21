@@ -24,6 +24,6 @@ jobs:
     secrets: inherit
 
   trivy:
-    needs: docker-build-push
+    needs: [docker-build-push]
     uses: ./.github/workflows/05_docker-image-scan.yml
     secrets: inherit

@@ -26,7 +26,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         with:
-          image-ref: ${{ env.DOCKER_USERNAME }}/github-actions-flask-app:${{ github.sha}}
+          image-ref: ${{ env.DOCKER_USERNAME }}/github-actions-app:${{ github.sha }}
           format: "table"
           severity: "CRITICAL"
           exit-code: "1"
