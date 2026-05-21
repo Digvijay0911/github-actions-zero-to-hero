@@ -4,35 +4,34 @@ on:
   workflow_dispatch:
 
 jobs:
+  # CI (Continuous Integration with Security Scanning)
   code-quality:
     uses: ./.github/workflows/01_code-quality.yml
 
   secrets-scan:
-    needs: code-quality
     uses: ./.github/workflows/02_secrets-scan.yml
 
   dependency-scan:
-    needs: secrets-scan
     uses: ./.github/workflows/03_dependency-scan.yml
 
   docker-lint:
-    needs: dependency-scan
     uses: ./.github/workflows/04_docker-lint.yml
 
   docker-image-scan:
-    needs: docker-lint
     uses: ./.github/workflows/05_docker-image-scan.yml
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    secrets: inherit
 
+  # Build once the security scans are successful, then push to Docker Hub
   docker-build-push:
-    needs: docker-image-scan
+    needs:
+      [
+        code-quality,
+        secrets-scan,
+        dependency-scan,
+        docker-lint,
+        docker-image-scan,
+      ]
     uses: ./.github/workflows/06_docker-build-push.yml
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    secrets: inherit
 
-  deploy-to-server:
-    needs: docker-build-push
-    uses: ./.github/workflows/07_deploy-to-server.yml
+  # CD (Continuous Deployment to Server)
