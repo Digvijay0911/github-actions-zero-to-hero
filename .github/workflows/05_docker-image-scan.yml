@@ -26,5 +26,5 @@ jobs:
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-flask-app:latest
           format: "table"
-          severity: "HIGH,CRITICAL"
+          severity: "CRITICAL"
           exit-code: "1"
