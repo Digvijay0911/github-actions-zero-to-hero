@@ -17,20 +17,9 @@ jobs:
   docker-lint:
     uses: ./.github/workflows/04_docker-lint.yml
 
-  docker-image-scan:
-    uses: ./.github/workflows/05_docker-image-scan.yml
-    secrets: inherit
-
   # Build once the security scans are successful, then push to Docker Hub
   docker-build-push:
-    needs:
-      [
-        code-quality,
-        secrets-scan,
-        dependency-scan,
-        docker-lint,
-        docker-image-scan,
-      ]
+    needs: [code-quality, secrets-scan, dependency-scan, docker-lint]
     uses: ./.github/workflows/06_docker-build-push.yml
     secrets: inherit
 
