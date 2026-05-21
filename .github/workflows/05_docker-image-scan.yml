@@ -23,8 +23,10 @@ jobs:
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         with:
-          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-flask-app:${{ github.sha}}
+          image-ref: ${{ env.DOCKER_USERNAME }}/github-actions-flask-app:${{ github.sha}}
           format: "table"
           severity: "CRITICAL"
           exit-code: "1"
