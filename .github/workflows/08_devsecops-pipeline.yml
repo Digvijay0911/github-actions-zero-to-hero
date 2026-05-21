@@ -34,4 +34,7 @@ jobs:
     uses: ./.github/workflows/06_docker-build-push.yml
     secrets: inherit
 
-  # CD (Continuous Deployment to Server)
+  trivy:
+    needs: docker-build-push
+    uses: ./.github/workflows/05_docker-image-scan.yml
+    secrets: inherit
