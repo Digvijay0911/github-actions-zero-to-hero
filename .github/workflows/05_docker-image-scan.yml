@@ -2,6 +2,11 @@ name: Docker Image Scan
 
 on:
   workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 
 jobs:
   scan-image:
@@ -19,7 +24,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ${{ vars.DOCKERHUB_USERNAME }}/github-actions-flask-app:latest
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-flask-app:latest
           format: "table"
           severity: "HIGH,CRITICAL"
           exit-code: "1"

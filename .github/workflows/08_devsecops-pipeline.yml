@@ -22,10 +22,16 @@ jobs:
   docker-image-scan:
     needs: docker-lint
     uses: ./.github/workflows/05_docker-image-scan.yml
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   docker-build-push:
     needs: docker-image-scan
     uses: ./.github/workflows/06_docker-build-push.yml
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
   deploy-to-server:
     needs: docker-build-push

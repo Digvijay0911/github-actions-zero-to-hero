@@ -2,6 +2,11 @@ name: Docker Build and Push to Docker Hub
 
 on:
   workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 
 jobs:
   build-and-push:
@@ -25,4 +30,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/github-actions-flask-app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-flask-app:latest
