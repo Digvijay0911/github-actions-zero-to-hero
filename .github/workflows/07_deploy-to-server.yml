@@ -1,61 +1,51 @@
-name: Deploy to Server - github-actions-prod-server
+# this will deploy the safe / secure / tested app to Prod server
+name: Deploy To Server
 
 on:
   workflow_call:
 
 jobs:
-  deploy-to-server:
+  deploy:
     runs-on: ubuntu-latest
     env:
-      DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKER_TAG: ${{ github.sha }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: SSH to PROD Server and and create a folder
+      - name: SSH to Prod server & create app folder
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_SSH_HOST }}
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            echo "Installing required packages & folders"
+            sudo apt-get update && sudo apt-get install docker.io docker-compose-v2 -y
+            sudo usermod -aG docker $USER
             mkdir -p devops
 
-      # - name: Clear any bad remote docker-compose path
-      #   uses: appleboy/ssh-action@v1.0.3
-      #   with:
-      #     host: ${{ secrets.EC2_SSH_HOST }}
-      #     username: ${{ secrets.EC2_SSH_USERNAME }}
-      #     key: ${{ secrets.EC2_SSH_KEY }}
-      #     script: |
-      #       if [ -f ~/devops/docker-compose.yml ]; then
-      #         rm ~/devops/docker-compose.yml
-      #       fi
-
-      - name: Copy the docker-compose file to the server
+      - name: Copy the docker-compose file
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.EC2_SSH_HOST }}
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker-compose.yml"
-          target: "~/devops/"
+          source: docker-compose.yml
+          target: ~/devops
 
-      - name: SSH to PROD Server and and run the app
+      - name: SSH to Prod server & run the app
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_SSH_HOST }}
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "Running the app using docker-compose"
-            sudo apt-get update
-            sudo apt-get install docker.io -y
-            sudo apt-get install docker-compose -y
-            sudo usermod -aG docker $USER && newgrp docker
-            export DOCKER_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+            echo "Running App"
+
+            export DOCKERHUB_USER=${{ secrets.DOCKERHUB_USERNAME }}
             export DOCKER_TAG=${{ github.sha }}
-            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-            cd ~/devops && docker compose down && docker compose up -d --build --force-recreate
+            echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+            cd ~/devops && docker compose down && docker compose up -d --build --force-recreate --pull always
