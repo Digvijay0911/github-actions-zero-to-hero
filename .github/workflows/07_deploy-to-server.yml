@@ -23,16 +23,16 @@ jobs:
           script: |
             mkdir -p devops
 
-      - name: Clear any bad remote docker-compose path
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_SSH_HOST }}
-          username: ${{ secrets.EC2_SSH_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            if [ -f ~/devops/docker-compose.yml ]; then
-              rm ~/devops/docker-compose.yml
-            fi
+      # - name: Clear any bad remote docker-compose path
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.EC2_SSH_HOST }}
+      #     username: ${{ secrets.EC2_SSH_USERNAME }}
+      #     key: ${{ secrets.EC2_SSH_KEY }}
+      #     script: |
+      #       if [ -f ~/devops/docker-compose.yml ]; then
+      #         rm ~/devops/docker-compose.yml
+      #       fi
 
       - name: Copy the docker-compose file to the server
         uses: appleboy/scp-action@v1
