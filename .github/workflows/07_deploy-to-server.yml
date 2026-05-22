@@ -20,6 +20,17 @@ jobs:
           script: |
             mkdir -p devops
 
+      - name: Clear any bad remote docker-compose path
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ${{ secrets.EC2_SSH_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            if [ -d ~/devops/docker-compose.yml ]; then
+              rm -rf ~/devops/docker-compose.yml
+            fi
+
       - name: Copy the docker-compose file to the server
         uses: appleboy/scp-action@v1
         with:
@@ -27,7 +38,7 @@ jobs:
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "docker-compose.yml"
-          target: "~/devops/docker-compose.yml"
+          target: "~/devops/"
 
       - name: SSH to PROD Server and and run the app
         uses: appleboy/ssh-action@v1.0.3
