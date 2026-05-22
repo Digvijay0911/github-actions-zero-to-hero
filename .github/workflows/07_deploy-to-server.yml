@@ -6,6 +6,9 @@ on:
 jobs:
   deploy-to-server:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKER_TAG: ${{ github.sha }}
 
     steps:
       - name: Checkout code
