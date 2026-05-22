@@ -8,12 +8,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH to PROD Server and Deploy
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: SSH to PROD Server and and create a folder
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_SSH_HOST }}
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "Deploying latest Docker image on PROD server..."
-            mkdir devops
+            mkdir -p devops
+
+      - name: Copy the docker-compose file to the server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ${{ secrets.EC2_SSH_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "~/devops/docker-compose.yml"
+
+      - name: SSH to PROD Server and and run the app
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ${{ secrets.EC2_SSH_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Running the app using docker-compose"
+            sudo apt-get update
+            sudo apt-get install docker.io -y
+            sudo apt-get install docker-compose -y
+            sudo usermod -aG docker $USER && newgrp docker
+            export DOCKER_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+            export DOCKER_TAG=${{ github.event.workflow_run.head_sha }}
+            echo "${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin"
+            cd ~/devops && docker compose down && docker compose up -d --build --force-recreate
