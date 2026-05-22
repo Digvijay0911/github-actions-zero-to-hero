@@ -30,8 +30,8 @@ jobs:
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            if [ -d ~/devops/docker-compose.yml ]; then
-              rm -rf ~/devops/docker-compose.yml
+            if [ -f ~/devops/docker-compose.yml ]; then
+              rm ~/devops/docker-compose.yml
             fi
 
       - name: Copy the docker-compose file to the server
