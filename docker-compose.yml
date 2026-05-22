@@ -1,7 +1,7 @@
 services:
 
   web:
-    image: ${DOCKER_USERNAME}/github-actions-app:${DOCKER_TAG} 
+    image: ${DOCKER_USERNAME}/github-actions-app:${DOCKER_TAG:-latest}
     ports:
       - "80:80"
     
